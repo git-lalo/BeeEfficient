@@ -1334,70 +1334,203 @@
     <section id="tab-admin-campus" class="tab-content">
         <div class="card">
             <h3>🎓 Campus — UiS Universitetsbygg</h3>
-            <p class="card-sub">Live romstatus fra bevegelse-, temp- og CO₂-sensorer i undervisnings- og fellesbygg</p>
+            <p class="card-sub">Energistyring synkronisert med EduCloud Timeplan — rom varmes kun når de er booket</p>
 
-            <div class="admin-kpi-grid">
-                <div class="admin-kpi">
-                    <div class="admin-kpi-val" style="color:var(--admin-accent);">5</div>
-                    <div class="admin-kpi-label">Bygninger</div>
-                    <div class="admin-kpi-change up">Campus Ullandhaug</div>
-                </div>
-                <div class="admin-kpi">
-                    <div class="admin-kpi-val" style="color:var(--danger);">1</div>
-                    <div class="admin-kpi-label">Rom med sløsing</div>
-                    <div class="admin-kpi-change down">Krever handling</div>
-                </div>
-                <div class="admin-kpi">
-                    <div class="admin-kpi-val" style="color:var(--success);">5</div>
-                    <div class="admin-kpi-label">Auto-handlinger i dag</div>
-                    <div class="admin-kpi-change up">Spart 2 340 kr</div>
-                </div>
-                <div class="admin-kpi">
-                    <div class="admin-kpi-val" style="color:var(--honey);">42</div>
-                    <div class="admin-kpi-label">Sensorer online</div>
-                    <div class="admin-kpi-change up">100% oppetid</div>
+            <!-- EduCloud Integration Banner -->
+            <div style="background:linear-gradient(135deg, rgba(6,182,212,0.08), rgba(59,130,246,0.04)); border:1px solid rgba(6,182,212,0.2); border-radius:14px; padding:14px 16px; margin-bottom:16px; display:flex; align-items:center; gap:12px;">
+                <div style="width:42px; height:42px; border-radius:12px; background:var(--admin-accent-dim); display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0;">📅</div>
+                <div style="flex:1;">
+                    <div style="font-weight:800; font-size:0.82rem; display:flex; align-items:center; gap:6px;">
+                        EduCloud Timeplan — Synkronisert
+                        <span style="font-size:0.58rem; background:var(--success); color:#fff; padding:2px 7px; border-radius:5px; font-weight:800;">LIVE</span>
+                    </div>
+                    <div style="font-size:0.68rem; color:var(--text-dim); margin-top:2px;">Bee Efficient leser timeplanen og forbereder rom automatisk 30 min før forelesning. Når et rom ikke er booket → eco-modus.</div>
                 </div>
             </div>
 
+            <div class="admin-kpi-grid">
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--admin-accent);">12</div>
+                    <div class="admin-kpi-label">Bookinger i dag</div>
+                    <div class="admin-kpi-change up">via EduCloud</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--danger);">1</div>
+                    <div class="admin-kpi-label">Rom sløser</div>
+                    <div class="admin-kpi-change down">Ingen booking</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--success);">6</div>
+                    <div class="admin-kpi-label">Auto-handlinger</div>
+                    <div class="admin-kpi-change up">Timeplan-drevet</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--honey);">3 480 kr</div>
+                    <div class="admin-kpi-label">Spart i dag</div>
+                    <div class="admin-kpi-change up">▲ 420 kr fra igår</div>
+                </div>
+            </div>
+
+            <!-- Today's Schedule from EduCloud -->
+            <div style="margin-top:4px;">
+                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                    📅 Timeplan i dag — Fredag 14. feb 2026
+                    <span style="font-size:0.58rem; background:rgba(6,182,212,0.15); color:var(--admin-accent); padding:2px 7px; border-radius:5px; font-weight:700;">EduCloud</span>
+                </div>
+
+                <!-- Schedule timeline -->
+                <div style="display:grid; gap:6px;">
+                    <!-- Completed lecture -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:10px 14px; background:rgba(0,209,102,0.04); border-radius:12px; border:1px solid rgba(0,209,102,0.1); opacity:0.7;">
+                        <div style="min-width:52px; text-align:center;">
+                            <div style="font-size:0.68rem; font-weight:800; color:var(--success);">08:15</div>
+                            <div style="font-size:0.55rem; color:var(--text-dim);">10:00</div>
+                        </div>
+                        <div style="width:3px; height:36px; border-radius:2px; background:var(--success); flex-shrink:0;"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:700; font-size:0.78rem;">DAT120 — Intro til programmering</div>
+                            <div style="font-size:0.65rem; color:var(--text-dim);">Aud. A · SV-bygget · 34 studenter</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:0.62rem; font-weight:700; color:var(--success);">✓ Fullført</div>
+                            <div style="font-size:0.55rem; color:var(--text-dim);">Varme kl 07:45</div>
+                        </div>
+                    </div>
+
+                    <!-- Active lecture -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:10px 14px; background:rgba(6,182,212,0.06); border-radius:12px; border:1px solid rgba(6,182,212,0.2); box-shadow:0 0 12px rgba(6,182,212,0.08);">
+                        <div style="min-width:52px; text-align:center;">
+                            <div style="font-size:0.68rem; font-weight:800; color:var(--admin-accent);">10:15</div>
+                            <div style="font-size:0.55rem; color:var(--text-dim);">12:00</div>
+                        </div>
+                        <div style="width:3px; height:36px; border-radius:2px; background:var(--admin-accent); flex-shrink:0; box-shadow:0 0 6px rgba(6,182,212,0.4);"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:700; font-size:0.78rem; display:flex; align-items:center; gap:5px;">BYG210 — Termodynamikk <span style="font-size:0.55rem; background:var(--admin-accent); color:#fff; padding:1px 6px; border-radius:4px; font-weight:700;">NÅ</span></div>
+                            <div style="font-size:0.65rem; color:var(--text-dim);">Lab 1 · TN-bygget · 8 studenter</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:0.62rem; font-weight:700; color:var(--admin-accent);">Aktiv</div>
+                            <div style="font-size:0.55rem; color:var(--text-dim);">20.8° · 0.9 kW</div>
+                        </div>
+                    </div>
+
+                    <!-- NO booking — wasting -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--danger-dim); border-radius:12px; border:1px solid rgba(255,77,77,0.2); animation: pulseRed 2s infinite;">
+                        <div style="min-width:52px; text-align:center;">
+                            <div style="font-size:0.68rem; font-weight:800; color:var(--danger);">—</div>
+                            <div style="font-size:0.55rem; color:var(--text-dim);">Ingen</div>
+                        </div>
+                        <div style="width:3px; height:36px; border-radius:2px; background:var(--danger); flex-shrink:0;"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:700; font-size:0.78rem; color:var(--danger);">⚠️ Auditorium B — IKKE BOOKET</div>
+                            <div style="font-size:0.65rem; color:var(--text-dim);">SV-bygget · Ingen forelesning i EduCloud · Lys/ventilasjon PÅ</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:0.62rem; font-weight:800; color:var(--danger);">14.50 kr/t</div>
+                            <div style="font-size:0.55rem; color:var(--text-dim);">Sløser 2t 14min</div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming lecture -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:10px 14px; background:rgba(255,255,255,0.02); border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                        <div style="min-width:52px; text-align:center;">
+                            <div style="font-size:0.68rem; font-weight:800; color:var(--text-dim);">12:15</div>
+                            <div style="font-size:0.55rem; color:var(--text-dim);">14:00</div>
+                        </div>
+                        <div style="width:3px; height:36px; border-radius:2px; background:rgba(255,255,255,0.1); flex-shrink:0;"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:700; font-size:0.78rem;">IND200 — Prosjektledelse</div>
+                            <div style="font-size:0.65rem; color:var(--text-dim);">Aud. A · SV-bygget · ~45 studenter</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:0.62rem; font-weight:700; color:var(--honey);">Forberedes</div>
+                            <div style="font-size:0.55rem; color:var(--text-dim);">Varme kl 11:45</div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming lecture 2 -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:10px 14px; background:rgba(255,255,255,0.02); border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                        <div style="min-width:52px; text-align:center;">
+                            <div style="font-size:0.68rem; font-weight:800; color:var(--text-dim);">14:15</div>
+                            <div style="font-size:0.55rem; color:var(--text-dim);">16:00</div>
+                        </div>
+                        <div style="width:3px; height:36px; border-radius:2px; background:rgba(255,255,255,0.1); flex-shrink:0;"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:700; font-size:0.78rem;">ELE320 — Signalbehandling</div>
+                            <div style="font-size:0.65rem; color:var(--text-dim);">Lab 1 · TN-bygget · ~22 studenter</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:0.62rem; font-weight:700; color:var(--text-dim);">Venter</div>
+                            <div style="font-size:0.55rem; color:var(--text-dim);">Varme kl 13:45</div>
+                        </div>
+                    </div>
+
+                    <!-- Evening — no bookings -->
+                    <div style="display:flex; align-items:center; gap:10px; padding:10px 14px; background:rgba(0,209,102,0.03); border-radius:12px; border:1px dashed rgba(0,209,102,0.15);">
+                        <div style="min-width:52px; text-align:center;">
+                            <div style="font-size:0.68rem; font-weight:800; color:var(--success);">16:00</div>
+                            <div style="font-size:0.55rem; color:var(--text-dim);">→ Natt</div>
+                        </div>
+                        <div style="width:3px; height:36px; border-radius:2px; background:var(--success); flex-shrink:0; opacity:0.4;"></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:700; font-size:0.78rem; color:var(--success);">🌙 Ingen flere bookinger — Eco-modus</div>
+                            <div style="font-size:0.65rem; color:var(--text-dim);">Alle rom settes til minimum fra kl 16:30. Estimert sparing: 890 kr</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:0.62rem; font-weight:700; color:var(--success);">Auto</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blueprint with booking status -->
+            <div style="margin-top:16px;">
+                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:8px;">🏗️ Romkart — Live status vs. EduCloud booking</div>
+            </div>
             <div class="blueprint">
                 <div class="room good" style="grid-area: r1">
-                    Auditorium A<br><small>I bruk — 34 pers.</small>
+                    Auditorium A<br><small>📅 DAT120 — 34 pers.</small>
                     <span class="room-temp">21.2°</span>
                     <span class="room-pwr">1.8 kW</span>
                 </div>
                 <div class="room good" style="grid-area: r2">
-                    Lab 1<br><small>8 pers.</small>
+                    Lab 1<br><small>📅 BYG210 — 8 pers.</small>
                     <span class="room-temp">20.8°</span>
                     <span class="room-pwr">0.9 kW</span>
                 </div>
                 <div class="room bad" id="aud-b" style="grid-area: r3" onclick="fixAud(event)">
-                    Auditorium B<br><strong style="font-size:0.75rem">⚠️ TOMT — SLØSER</strong>
+                    Auditorium B<br><strong style="font-size:0.7rem">❌ Ingen booking — SLØSER</strong>
                     <span class="room-temp">23.1°</span>
                     <span class="room-pwr">2.4 kW</span>
                 </div>
                 <div class="room good" style="grid-area: r4">
-                    Kantine<br><small>Eco-modus</small>
+                    Kantine<br><small>📅 Ingen — Eco-modus</small>
                     <span class="room-temp">20.5°</span>
                     <span class="room-pwr">0.6 kW</span>
                 </div>
                 <div class="room good" style="grid-area: r5">
-                    Kontor<br><small>3 pers.</small>
+                    Kontor<br><small>Ansatte — 3 pers.</small>
                     <span class="room-temp">21.0°</span>
                     <span class="room-pwr">0.4 kW</span>
                 </div>
             </div>
 
+            <!-- Alert tied to booking -->
             <div id="alert-box" style="background: var(--danger-dim); padding: 16px; border-radius: 14px; border: 1px solid rgba(255,77,77,0.2); margin-top: 14px;">
-                <div style="font-weight:700; font-size:0.85rem; margin-bottom:8px;">🚨 Avvik Detektert — Auditorium B</div>
+                <div style="font-weight:700; font-size:0.85rem; margin-bottom:8px;">🚨 Sløsing Detektert — Auditorium B</div>
                 <div style="font-size:0.78rem; color:var(--text-dim); margin-bottom: 10px;">
-                    Bevegelsessensor: <b style="color:var(--text)">0 personer</b> i 2t 14min<br>
-                    Lys: <b style="color:var(--danger)">100%</b> · Ventilasjon: <b style="color:var(--danger)">Full</b> · Temp: <b style="color:var(--danger)">23.1°</b>
+                    📅 <b style="color:var(--text)">EduCloud: Ingen booking</b> resten av dagen<br>
+                    👤 Bevegelsessensor: <b style="color:var(--text)">0 personer</b> i 2t 14min<br>
+                    💡 Lys: <b style="color:var(--danger)">100%</b> · 🌀 Ventilasjon: <b style="color:var(--danger)">Full</b> · 🌡️ Temp: <b style="color:var(--danger)">23.1°</b>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px; font-size: 0.82rem;">
                     <span>💸 Unødvendig tap:</span>
                     <strong style="color:var(--danger); font-size: 1rem;">14.50 kr/t</strong>
                 </div>
-                <button class="buy-btn" style="width:100%; padding:12px; font-size:0.85rem;" onclick="fixAud(event)">⚡ OPTIMALISER NÅ</button>
+                <div style="display:flex; gap:8px;">
+                    <button class="buy-btn" style="flex:1; padding:12px; font-size:0.85rem;" onclick="fixAud(event)">⚡ OPTIMALISER NÅ</button>
+                    <button class="buy-btn" style="flex:1; padding:12px; font-size:0.85rem; background:linear-gradient(135deg, var(--admin-accent), #0891b2); color:#fff;" onclick="showToast('📅 Regelen lagret: Aud. B → auto eco-modus når ingen booking i EduCloud', 'success')">📅 AUTO-REGEL</button>
+                </div>
             </div>
             <div id="fix-msg" style="display:none; text-align:center; color:var(--success); margin-top:14px; padding: 18px; background: var(--success-dim); border-radius: 14px; border: 1px solid rgba(0,209,102,0.15);">
                 <div style="font-size:1.8rem; margin-bottom:6px;">✅</div>
@@ -1407,51 +1540,103 @@
         </div>
 
         <div class="card">
-            <h3>⚡ Energi & Automatikk — Campus</h3>
-            <p class="card-sub">Energifordeling og automatiske hendelser for universitetsbygg</p>
+            <h3>📊 Timeplan vs. Energibruk — Analyse</h3>
+            <p class="card-sub">Hvor mye energi brukes utenfor booket tid? Data fra EduCloud + sensorer.</p>
 
-            <!-- Energifordeling -->
-            <div style="margin-top:8px;">
-                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:8px;">⚡ Energifordeling — 2. Etasje</div>
-                <div class="energy-flow">
-                    <div class="flow-row">
-                        <span class="flow-label">🌡️ Oppvarming</span>
-                        <div class="flow-bar-bg">
-                            <div class="flow-bar-fill" style="width:45%; background: linear-gradient(90deg, #f59e0b, #fbbf24);">45%</div>
-                        </div>
+            <!-- Booking efficiency stats -->
+            <div class="admin-kpi-grid">
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--success);">78%</div>
+                    <div class="admin-kpi-label">Booking-effektivitet</div>
+                    <div class="admin-kpi-change up">Energi kun ved booking</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--danger);">22%</div>
+                    <div class="admin-kpi-label">Sløsing uten booking</div>
+                    <div class="admin-kpi-change down">↓ 8% fra jan</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--honey);">4.2t</div>
+                    <div class="admin-kpi-label">Snitt prep-tid spart</div>
+                    <div class="admin-kpi-change up">Per rom per dag</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--success);">41 200</div>
+                    <div class="admin-kpi-label">kr spart (feb)</div>
+                    <div class="admin-kpi-change up">Timeplan-integrasjon</div>
+                </div>
+            </div>
+
+            <!-- How it works -->
+            <div style="margin-top:8px; padding:14px; background:rgba(6,182,212,0.04); border-radius:14px; border:1px solid rgba(6,182,212,0.1);">
+                <div style="font-weight:700; font-size:0.82rem; margin-bottom:10px;">⚙️ Slik fungerer EduCloud-integrasjonen</div>
+                <div style="display:grid; gap:8px;">
+                    <div style="display:flex; align-items:center; gap:10px; font-size:0.75rem;">
+                        <div style="width:28px; height:28px; border-radius:8px; background:var(--admin-accent-dim); display:flex; align-items:center; justify-content:center; font-weight:900; color:var(--admin-accent); font-size:0.7rem; flex-shrink:0;">1</div>
+                        <div><b>Henter timeplan</b> — API-kall til EduCloud hver natt kl 02:00 + live-oppdateringer ved endringer</div>
                     </div>
-                    <div class="flow-row">
-                        <span class="flow-label">💡 Belysning</span>
-                        <div class="flow-bar-bg">
-                            <div class="flow-bar-fill" style="width:22%; background: linear-gradient(90deg, #3b82f6, #60a5fa);">22%</div>
-                            <span class="flow-waste-indicator" id="light-waste">⚠ 8% sløsing</span>
-                        </div>
+                    <div style="display:flex; align-items:center; gap:10px; font-size:0.75rem;">
+                        <div style="width:28px; height:28px; border-radius:8px; background:var(--admin-accent-dim); display:flex; align-items:center; justify-content:center; font-weight:900; color:var(--admin-accent); font-size:0.7rem; flex-shrink:0;">2</div>
+                        <div><b>Pre-heating 30 min</b> — Rommet varmes til måltemp basert på antall påmeldte studenter</div>
                     </div>
-                    <div class="flow-row">
-                        <span class="flow-label">🌀 Ventilasjon</span>
-                        <div class="flow-bar-bg">
-                            <div class="flow-bar-fill" style="width:25%; background: linear-gradient(90deg, #a78bfa, #c4b5fd);">25%</div>
-                            <span class="flow-waste-indicator" id="vent-waste">⚠ 12% sløsing</span>
-                        </div>
+                    <div style="display:flex; align-items:center; gap:10px; font-size:0.75rem;">
+                        <div style="width:28px; height:28px; border-radius:8px; background:var(--admin-accent-dim); display:flex; align-items:center; justify-content:center; font-weight:900; color:var(--admin-accent); font-size:0.7rem; flex-shrink:0;">3</div>
+                        <div><b>Live-verifisering</b> — Bevegelsessensor bekrefter om folk faktisk er der. Avvik → alarm</div>
                     </div>
-                    <div class="flow-row">
-                        <span class="flow-label">🔌 Utstyr</span>
-                        <div class="flow-bar-bg">
-                            <div class="flow-bar-fill" style="width:8%; background: linear-gradient(90deg, #64748b, #94a3b8);">8%</div>
-                        </div>
+                    <div style="display:flex; align-items:center; gap:10px; font-size:0.75rem;">
+                        <div style="width:28px; height:28px; border-radius:8px; background:var(--admin-accent-dim); display:flex; align-items:center; justify-content:center; font-weight:900; color:var(--admin-accent); font-size:0.7rem; flex-shrink:0;">4</div>
+                        <div><b>Cool-down 15 min etter</b> — Rommet senkes til eco-modus 15 min etter forelesning er slutt</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Bygningsliste campus -->
+            <!-- Energy waste by time-of-day -->
+            <div style="margin-top:14px;">
+                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:8px;">⚡ Energibruk — Booket vs. Ikke-booket tid (denne uka)</div>
+                <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:4px;">
+                    <div style="text-align:center; font-size:0.55rem; font-weight:700; color:var(--text-dim);">Man</div>
+                    <div style="text-align:center; font-size:0.55rem; font-weight:700; color:var(--text-dim);">Tir</div>
+                    <div style="text-align:center; font-size:0.55rem; font-weight:700; color:var(--text-dim);">Ons</div>
+                    <div style="text-align:center; font-size:0.55rem; font-weight:700; color:var(--text-dim);">Tor</div>
+                    <div style="text-align:center; font-size:0.55rem; font-weight:700; color:var(--admin-accent);">Fre</div>
+                </div>
+                <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:4px; margin-top:4px;">
+                    <div style="border-radius:8px; overflow:hidden;">
+                        <div style="background:var(--success); height:40px; display:flex; align-items:center; justify-content:center; font-size:0.55rem; font-weight:800; color:#000;">82%</div>
+                        <div style="background:var(--danger); height:12px; display:flex; align-items:center; justify-content:center; font-size:0.5rem; font-weight:700; color:#fff;">18%</div>
+                    </div>
+                    <div style="border-radius:8px; overflow:hidden;">
+                        <div style="background:var(--success); height:36px; display:flex; align-items:center; justify-content:center; font-size:0.55rem; font-weight:800; color:#000;">76%</div>
+                        <div style="background:var(--danger); height:16px; display:flex; align-items:center; justify-content:center; font-size:0.5rem; font-weight:700; color:#fff;">24%</div>
+                    </div>
+                    <div style="border-radius:8px; overflow:hidden;">
+                        <div style="background:var(--success); height:44px; display:flex; align-items:center; justify-content:center; font-size:0.55rem; font-weight:800; color:#000;">88%</div>
+                        <div style="background:var(--danger); height:8px;"></div>
+                    </div>
+                    <div style="border-radius:8px; overflow:hidden;">
+                        <div style="background:var(--success); height:38px; display:flex; align-items:center; justify-content:center; font-size:0.55rem; font-weight:800; color:#000;">80%</div>
+                        <div style="background:var(--danger); height:14px; display:flex; align-items:center; justify-content:center; font-size:0.5rem; font-weight:700; color:#fff;">20%</div>
+                    </div>
+                    <div style="border-radius:8px; overflow:hidden; border:1px solid rgba(6,182,212,0.3);">
+                        <div style="background:var(--admin-accent); height:34px; display:flex; align-items:center; justify-content:center; font-size:0.55rem; font-weight:800; color:#fff;">?</div>
+                        <div style="background:rgba(255,77,77,0.3); height:10px;"></div>
+                    </div>
+                </div>
+                <div style="display:flex; gap:12px; margin-top:6px; font-size:0.6rem; color:var(--text-dim); font-weight:600;">
+                    <span><span style="display:inline-block; width:8px; height:8px; border-radius:2px; background:var(--success); margin-right:3px; vertical-align:middle;"></span>Booket tid</span>
+                    <span><span style="display:inline-block; width:8px; height:8px; border-radius:2px; background:var(--danger); margin-right:3px; vertical-align:middle;"></span>Sløsing uten booking</span>
+                </div>
+            </div>
+
+            <!-- Campusbygg -->
             <div style="margin-top:16px;">
-                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:8px;">🏛️ Campusbygg under overvåking</div>
+                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:8px;">🏛️ Campusbygg — Neste forelesninger fra EduCloud</div>
                 <div class="building-list">
                     <div class="building-item">
                         <div class="building-icon" style="background:var(--accent-dim);">📚</div>
                         <div class="building-body">
                             <div class="building-name">Sosialvitenskap (SV)</div>
-                            <div class="building-meta">2 auditorier · 6 grupperom · 18 sensorer</div>
+                            <div class="building-meta">📅 Neste: IND200 kl 12:15 · Aud. A</div>
                         </div>
                         <div class="building-status bad" style="background:var(--danger-dim); color:var(--danger);">1 avvik</div>
                     </div>
@@ -1459,7 +1644,7 @@
                         <div class="building-icon" style="background:var(--success-dim);">🔬</div>
                         <div class="building-body">
                             <div class="building-name">Teknisk-Naturvitenskapelig (TN)</div>
-                            <div class="building-meta">4 labber · 3 auditorier · 12 sensorer</div>
+                            <div class="building-meta">📅 Aktiv: BYG210 · Neste: ELE320 kl 14:15</div>
                         </div>
                         <div class="building-status good">Effektiv</div>
                     </div>
@@ -1467,15 +1652,15 @@
                         <div class="building-icon" style="background:var(--success-dim);">🏥</div>
                         <div class="building-body">
                             <div class="building-name">Helsefag (HF)</div>
-                            <div class="building-meta">1 auditorium · 4 øvingslokaler · 8 sensorer</div>
+                            <div class="building-meta">📅 Ingen bookinger i dag — Full eco-modus</div>
                         </div>
-                        <div class="building-status good">Effektiv</div>
+                        <div class="building-status good">Eco ♻️</div>
                     </div>
                     <div class="building-item">
                         <div class="building-icon" style="background:var(--success-dim);">📖</div>
                         <div class="building-body">
                             <div class="building-name">Bibliotek & Læringssenteret</div>
-                            <div class="building-meta">3 etasjer · Leseplasser · 6 sensorer</div>
+                            <div class="building-meta">📅 Åpent 08–18 · Behovsbasert ventilasjon</div>
                         </div>
                         <div class="building-status good">Effektiv</div>
                     </div>
@@ -1483,35 +1668,39 @@
                         <div class="building-icon" style="background:var(--success-dim);">🍽️</div>
                         <div class="building-body">
                             <div class="building-name">Kantine & Fellesarealer</div>
-                            <div class="building-meta">Kantine · Lounge · 4 sensorer</div>
+                            <div class="building-meta">📅 Lunsj 11–13 · Eco etter 14:00</div>
                         </div>
                         <div class="building-status good">Eco-modus</div>
                     </div>
                 </div>
             </div>
 
-            <!-- IoT Timeline -->
+            <!-- IoT Timeline tied to bookings -->
             <div class="iot-timeline">
-                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-top:12px; margin-bottom:2px;">⏱ Automatiske Hendelser i Dag — Campus</div>
+                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-top:12px; margin-bottom:2px;">⏱ Automatiske Handlinger — Drevet av EduCloud Timeplan</div>
                 <div class="iot-event auto">
-                    <span class="iot-time">07:58</span>
-                    <span>🤖 Aud. A — Varme økt til 21° (forelesning kl 08)</span>
+                    <span class="iot-time">07:45</span>
+                    <span>📅 Aud. A — Pre-heating til 21° (DAT120 kl 08:15, 34 påmeldte)</span>
                 </div>
                 <div class="iot-event success">
-                    <span class="iot-time">09:42</span>
-                    <span>✅ Kantine — Ventilasjon auto-redusert (lavt belegg)</span>
+                    <span class="iot-time">09:50</span>
+                    <span>📅 Lab 1 — Varme økt (BYG210 kl 10:15, 8 påmeldte)</span>
                 </div>
                 <div class="iot-event alert">
                     <span class="iot-time">10:15</span>
-                    <span>⚠️ Aud. B — Tomt rom detektert, venter på handling</span>
-                </div>
-                <div class="iot-event auto">
-                    <span class="iot-time">11:03</span>
-                    <span>🤖 Lab 1 — Temp justert til 20.8° (CO₂-basert)</span>
+                    <span>⚠️ Aud. B — Ingen booking i EduCloud + 0 personer = Sløsing detektert</span>
                 </div>
                 <div class="iot-event success">
-                    <span class="iot-time">11:30</span>
-                    <span>✅ Kontor — Lys dimmet 30% (dagslys tilstrekkelig)</span>
+                    <span class="iot-time">10:30</span>
+                    <span>✅ Aud. A — Cool-down startet (DAT120 ferdig, neste kl 12:15)</span>
+                </div>
+                <div class="iot-event auto">
+                    <span class="iot-time">11:45</span>
+                    <span>📅 Aud. A — Pre-heating igjen (IND200 kl 12:15, ~45 påmeldte)</span>
+                </div>
+                <div class="iot-event auto">
+                    <span class="iot-time">13:45</span>
+                    <span>📅 Lab 1 — Pre-heating (ELE320 kl 14:15, ~22 påmeldte)</span>
                 </div>
             </div>
         </div>
