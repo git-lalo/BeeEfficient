@@ -632,7 +632,7 @@
         <div class="logo-text"><span>BEE</span> EFFICIENT</div>
     </div>
     <div class="header-right">
-        <div class="live-badge"><div class="live-dot"></div> <span id="sensor-count">12</span> Sensorer Live</div>
+        <div class="live-badge"><div class="live-dot"></div> LIVE</div>
         <div class="honey-pill" id="honey-pill-wrap">🍯 <span id="honey-val">450</span> HONEY</div>
     </div>
 </header>
@@ -648,18 +648,17 @@
 <nav id="nav-student">
     <button class="nav-btn active" onclick="showTab('hybel', this, 'student')">Min Hybel</button>
     <button class="nav-btn" onclick="showTab('ai', this, 'student')">🤖 BeeAI</button>
-    <button class="nav-btn" onclick="showTab('innsikt', this, 'student')">Innsikt</button>
     <button class="nav-btn" onclick="showTab('shop', this, 'student')">Honey Shop</button>
 </nav>
 
 <!-- ========== ADMIN NAV ========== -->
 <nav id="nav-admin" style="display:none;">
     <button class="nav-btn active" onclick="showTab('admin-dash', this, 'admin')">Dashboard</button>
-    <button class="nav-btn" onclick="showTab('admin-bygg', this, 'admin')">Bygninger</button>
+    <button class="nav-btn" onclick="showTab('admin-student', this, 'admin')">Studentboliger</button>
+    <button class="nav-btn" onclick="showTab('admin-campus', this, 'admin')">Campus / Uni</button>
     <button class="nav-btn" onclick="showTab('admin-okonomi', this, 'admin')">Økonomi</button>
-    <button class="nav-btn" onclick="showTab('admin-beboere', this, 'admin')">Beboere</button>
+    <button class="nav-btn" onclick="showTab('admin-beboere', this, 'admin')">Boligoversikt</button>
     <button class="nav-btn" onclick="showTab('admin-varsler', this, 'admin')">Varsler</button>
-    <button class="nav-btn" onclick="showTab('admin-policy', this, 'admin')">Innstillinger</button>
 </nav>
 
 <main>
@@ -672,95 +671,183 @@
     <section id="tab-hybel" class="tab-content active">
         <div class="card">
             <h3>🏠 Kube 4B — Din Hybel</h3>
-            <p class="card-sub">Sanntidsdata fra 4 IoT-sensorer i din enhet</p>
+            <p class="card-sub">Slik har du det akkurat nå — alt styres automatisk for deg</p>
 
-            <div class="gauge-container">
-                <svg class="gauge-svg" viewBox="0 0 120 120">
-                    <circle class="gauge-bg" cx="60" cy="60" r="50"/>
-                    <circle class="gauge-fill" cx="60" cy="60" r="50"
-                        stroke="url(#gaugeGrad)" id="gauge-arc"
-                        stroke-dasharray="314" stroke-dashoffset="96"/>
-                    <defs>
-                        <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#f59e0b"/>
-                            <stop offset="100%" stop-color="#fbbf24"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
-                <div class="gauge-text">
-                    <span class="gauge-temp" id="temp-display">21.5°</span>
-                    <span class="gauge-label" id="temp-label">OPTIMAL</span>
+            <!-- Comfort Score -->
+            <div style="display:flex; align-items:center; gap:20px; margin:16px 0;">
+                <div class="gauge-container" style="width:120px; height:120px; margin:0; flex-shrink:0;">
+                    <svg class="gauge-svg" viewBox="0 0 120 120">
+                        <circle class="gauge-bg" cx="60" cy="60" r="50"/>
+                        <circle class="gauge-fill" cx="60" cy="60" r="50"
+                            stroke="url(#gaugeGrad)" id="gauge-arc"
+                            stroke-dasharray="314" stroke-dashoffset="44"/>
+                        <defs>
+                            <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#00d166"/>
+                                <stop offset="100%" stop-color="#34d399"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <div class="gauge-text">
+                        <span class="gauge-temp" id="comfort-score" style="font-size:1.6rem;">86</span>
+                        <span class="gauge-label" id="comfort-label">KOMFORT</span>
+                    </div>
+                </div>
+                <div style="flex:1;">
+                    <div style="font-weight:800; font-size:1rem; margin-bottom:6px;" id="comfort-headline">😊 Perfekt stemning!</div>
+                    <div style="font-size:0.75rem; color:var(--text-dim); line-height:1.5;" id="comfort-desc">Luften er frisk, temperaturen behagelig, og lyset er fint. BeeAI styrer alt i bakgrunnen.</div>
                 </div>
             </div>
 
-            <div class="sensor-grid">
-                <div class="sensor-item">
-                    <div class="sensor-icon">💨</div>
-                    <span class="sensor-val" id="air-val" style="color:var(--success)">623</span>
-                    <div class="sensor-name">CO₂ ppm</div>
+            <!-- Vibe indicators (translated from raw sensors) -->
+            <div class="sensor-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="sensor-item" id="vibe-air" style="border-color:rgba(0,209,102,0.15);">
+                    <div class="sensor-icon">🌿</div>
+                    <span class="sensor-val" style="color:var(--success); font-size:0.75rem;">Frisk</span>
+                    <div class="sensor-name">Luftkvalitet</div>
                 </div>
-                <div class="sensor-item">
-                    <div class="sensor-icon">⚡</div>
-                    <span class="sensor-val" id="power-val">0.34</span>
-                    <div class="sensor-name">kW nå</div>
+                <div class="sensor-item" id="vibe-temp" style="border-color:rgba(255,195,0,0.15);">
+                    <div class="sensor-icon">🌡️</div>
+                    <span class="sensor-val" id="temp-display" style="color:var(--honey); font-size:0.75rem;">21.5°</span>
+                    <div class="sensor-name">Temperatur</div>
                 </div>
-                <div class="sensor-item">
-                    <div class="sensor-icon">💧</div>
-                    <span class="sensor-val" id="humidity-val">44%</span>
-                    <div class="sensor-name">Fuktighet</div>
+                <div class="sensor-item" id="vibe-light" style="border-color:rgba(59,130,246,0.15);">
+                    <div class="sensor-icon">☀️</div>
+                    <span class="sensor-val" style="color:var(--accent); font-size:0.75rem;">Fint</span>
+                    <div class="sensor-name">Lysforhold</div>
                 </div>
-                <div class="sensor-item">
-                    <div class="sensor-icon">💡</div>
-                    <span class="sensor-val" id="lux-val">320</span>
-                    <div class="sensor-name">Lux</div>
+                <div class="sensor-item" id="vibe-streak" style="border-color:rgba(167,139,250,0.15);">
+                    <div class="sensor-icon">🔥</div>
+                    <span class="sensor-val" style="color:var(--purple); font-size:0.75rem;">5 dager</span>
+                    <div class="sensor-name">Streak</div>
                 </div>
             </div>
 
-            <div class="mode-grid">
-                <button class="mode-btn active" onclick="setMode('hjemme', this)">🏠 Hjemme</button>
-                <button class="mode-btn" onclick="setMode('bort', this)">✈️ Bortreist (+50 🍯)</button>
-                <button class="mode-btn" onclick="setMode('natt', this)">🌙 Nattmodus</button>
-                <button class="mode-btn" onclick="setMode('lese', this)">📖 Lesemodus</button>
+            <!-- Daily Impact — relatable -->
+            <div style="margin-top:14px; padding:14px 16px; background:linear-gradient(135deg, rgba(0,209,102,0.06), rgba(0,209,102,0.02)); border-radius:14px; border:1px solid rgba(0,209,102,0.12);">
+                <div style="font-weight:800; font-size:0.82rem; margin-bottom:10px;">🌍 Din påvirkning denne uka</div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px;">
+                    <div style="text-align:center; background:rgba(0,0,0,0.15); border-radius:10px; padding:10px 6px;">
+                        <div style="font-size:1.3rem;">☕</div>
+                        <div style="font-weight:900; font-size:0.95rem; color:var(--success);">3.2</div>
+                        <div style="font-size:0.58rem; color:var(--text-dim); font-weight:600;">Kopper kaffe spart</div>
+                    </div>
+                    <div style="text-align:center; background:rgba(0,0,0,0.15); border-radius:10px; padding:10px 6px;">
+                        <div style="font-size:1.3rem;">🚗</div>
+                        <div style="font-weight:900; font-size:0.95rem; color:var(--success);">28 km</div>
+                        <div style="font-size:0.58rem; color:var(--text-dim); font-weight:600;">Bilkjøring i CO₂</div>
+                    </div>
+                    <div style="text-align:center; background:rgba(0,0,0,0.15); border-radius:10px; padding:10px 6px;">
+                        <div style="font-size:1.3rem;">🌳</div>
+                        <div style="font-weight:900; font-size:0.95rem; color:var(--success);">0.4</div>
+                        <div style="font-size:0.58rem; color:var(--text-dim); font-weight:600;">Trær i absorpsjon</div>
+                    </div>
+                </div>
             </div>
 
-            <div class="achievement-bar">
-                <div class="badge earned">🌱 <span class="badge-tooltip">Grønn Start</span></div>
-                <div class="badge earned">⚡ <span class="badge-tooltip">Strømsparer</span></div>
-                <div class="badge earned">🏆 <span class="badge-tooltip">Topp 10</span></div>
-                <div class="badge locked">🔥 <span class="badge-tooltip">7-dagers streak</span></div>
-                <div class="badge locked">💎 <span class="badge-tooltip">1000 Honey</span></div>
-                <div class="badge locked">🌍 <span class="badge-tooltip">CO₂ Champion</span></div>
+            <!-- Mode selector -->
+            <div style="margin-top:14px;">
+                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:6px;">🎛️ Velg modus for hybelen din</div>
+                <div class="mode-grid">
+                    <button class="mode-btn active" onclick="setMode('hjemme', this)">🏠 Hjemme</button>
+                    <button class="mode-btn" onclick="setMode('bort', this)">✈️ Bortreist (+50 🍯)</button>
+                    <button class="mode-btn" onclick="setMode('natt', this)">🌙 Nattmodus</button>
+                    <button class="mode-btn" onclick="setMode('lese', this)">📖 Lesemodus</button>
+                </div>
+            </div>
+
+            <!-- Badges / Achievements -->
+            <div style="margin-top:14px;">
+                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:6px;">🏅 Dine badges</div>
+                <div class="achievement-bar">
+                    <div class="badge earned">🌱 <span class="badge-tooltip">Grønn Start</span></div>
+                    <div class="badge earned">⚡ <span class="badge-tooltip">Strømsparer</span></div>
+                    <div class="badge earned">🏆 <span class="badge-tooltip">Topp 10</span></div>
+                    <div class="badge locked">🔥 <span class="badge-tooltip">7-dagers streak (2 igjen!)</span></div>
+                    <div class="badge locked">💎 <span class="badge-tooltip">1000 Honey (550 igjen)</span></div>
+                    <div class="badge locked">🌍 <span class="badge-tooltip">CO₂ Champion</span></div>
+                </div>
+            </div>
+
+            <!-- Daily tip -->
+            <div style="margin-top:14px; padding:12px 14px; background:rgba(255,195,0,0.04); border-radius:12px; border:1px solid rgba(255,195,0,0.1); display:flex; gap:10px; align-items:center;">
+                <span style="font-size:1.3rem;">💡</span>
+                <div>
+                    <div style="font-weight:700; font-size:0.78rem;">Dagens tips</div>
+                    <div style="font-size:0.7rem; color:var(--text-dim);">Visste du at BeeAI automatisk dimmer lyset når dagslyset er sterkt nok? Du sparer energi uten å merke det!</div>
+                </div>
             </div>
         </div>
 
         <div class="card">
-            <h3>📊 Strømkostnad — Februar</h3>
-            <p class="card-sub">Sammenligning med og uten Bee Efficient</p>
-            <div class="graph-box">
-                <div class="bar-container">
-                    <div class="bar-wrapper">
-                        <span class="bar-value">412 kr</span>
-                        <div class="bar bar-normal"></div>
-                        <span class="bar-label">Uten Bee</span>
-                    </div>
-                    <div class="bar-wrapper">
-                        <span class="bar-value" style="color:var(--honey)">238 kr</span>
-                        <div class="bar bar-bee" id="my-bar"></div>
-                        <span class="bar-label">Med Bee</span>
-                    </div>
+            <h3>🏆 Toppliste — Februar 2026</h3>
+            <p class="card-sub">Frivillig leaderboard — delta og se hvor din kube ligger! Inspirert av fellesskap, ikke konkurranse.</p>
+
+            <!-- Opt-in banner -->
+            <div style="background:rgba(255,195,0,0.05); border:1px solid rgba(255,195,0,0.15); border-radius:12px; padding:12px 14px; margin-bottom:14px; display:flex; align-items:center; gap:10px;">
+                <span style="font-size:1.3rem;">✋</span>
+                <div style="flex:1;">
+                    <div style="font-weight:700; font-size:0.82rem;">Du deltar frivillig</div>
+                    <div style="font-size:0.68rem; color:var(--text-dim);">Kun kubenavn vises — ingen persondata. Du kan melde deg av når som helst.</div>
                 </div>
-            </div>
-            <div style="text-align:center;">
-                <div class="savings-badge">📉 Du sparer 42% — 174 kr/mnd</div>
+                <button class="policy-toggle on" onclick="togglePolicy(this)" style="flex-shrink:0;"></button>
             </div>
 
-            <div style="margin-top:18px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                    <span style="font-size:0.72rem; font-weight:700; color:var(--text-dim);">Forbruk siste 24t (kW)</span>
-                    <span style="font-size:0.6rem; color:var(--text-dim);">NÅ →</span>
+            <!-- Top 3 podium -->
+            <div style="display:flex; align-items:flex-end; justify-content:center; gap:12px; margin-bottom:16px; padding:10px 0;">
+                <div style="text-align:center;">
+                    <div style="font-size:1.5rem;">🥈</div>
+                    <div style="background:linear-gradient(135deg, #94a3b8, #64748b); border-radius:12px 12px 0 0; padding:16px 14px 10px; min-width:80px;">
+                        <div style="font-weight:800; font-size:0.78rem; color:#fff;">Kube 7C</div>
+                        <div style="font-size:0.65rem; color:rgba(255,255,255,0.7);">Jonas</div>
+                    </div>
+                    <div style="font-weight:800; font-size:0.75rem; color:var(--honey); margin-top:4px;">980 🍯</div>
                 </div>
-                <div class="sparkline-row" id="sparkline"></div>
-                <div class="spark-labels"><span>00:00</span><span>06:00</span><span>12:00</span><span>18:00</span><span>Nå</span></div>
+                <div style="text-align:center;">
+                    <div style="font-size:1.8rem;">👑</div>
+                    <div style="background:linear-gradient(135deg, #fbbf24, #f59e0b); border-radius:12px 12px 0 0; padding:22px 14px 10px; min-width:90px; box-shadow:0 4px 16px var(--honey-glow);">
+                        <div style="font-weight:900; font-size:0.85rem; color:#000;">Kube 2A</div>
+                        <div style="font-size:0.65rem; color:rgba(0,0,0,0.6);">Maria & Erik</div>
+                    </div>
+                    <div style="font-weight:900; font-size:0.85rem; color:var(--honey); margin-top:4px;">1 240 🍯</div>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:1.5rem;">🥉</div>
+                    <div style="background:linear-gradient(135deg, #d97706, #b45309); border-radius:12px 12px 0 0; padding:12px 14px 10px; min-width:80px;">
+                        <div style="font-weight:800; font-size:0.78rem; color:#fff;">Kube 1D</div>
+                        <div style="font-size:0.65rem; color:rgba(255,255,255,0.7);">Sara & Nils</div>
+                    </div>
+                    <div style="font-weight:800; font-size:0.75rem; color:var(--honey); margin-top:4px;">870 🍯</div>
+                </div>
+            </div>
+
+            <!-- Full leaderboard -->
+            <div class="leaderboard">
+                <div class="lb-row you" style="border:1px solid rgba(255,195,0,0.2); margin-bottom:6px;">
+                    <div class="lb-rank" style="background:var(--honey); color:#000;">4</div>
+                    <div class="lb-name">Kube 4B — <b>Du</b> 👈</div>
+                    <div class="lb-pts" id="lb-your-pts">450 🍯</div>
+                    <span class="lb-trend up">▲3</span>
+                </div>
+
+
+            <!-- Weekly challenge (Strava-inspired) -->
+            <div style="margin-top:14px; background:linear-gradient(135deg, rgba(255,195,0,0.06), rgba(245,158,11,0.02)); border:1px solid rgba(255,195,0,0.12); border-radius:14px; padding:14px 16px;">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <span style="font-size:1.2rem;">🔥</span>
+                    <div>
+                        <div style="font-weight:800; font-size:0.85rem;">Ukens Challenge — Uke 7</div>
+                        <div style="font-size:0.68rem; color:var(--text-dim);">Spar mest energi mens du er borte</div>
+                    </div>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.78rem; margin-bottom:6px;">
+                    <span>Din fremgang:</span>
+                    <strong style="color:var(--honey);">68% av mål</strong>
+                </div>
+                <div style="background:rgba(255,255,255,0.05); border-radius:6px; height:8px; overflow:hidden;">
+                    <div style="height:100%; width:68%; background:linear-gradient(90deg, var(--honey), #f59e0b); border-radius:6px;"></div>
+                </div>
+                <div style="font-size:0.65rem; color:var(--text-dim); margin-top:6px;">Premie: 200 🍯 + ☕ Gratis kaffe hos SiS</div>
             </div>
 
             <div class="co2-stat">
@@ -768,6 +855,7 @@
                 <div>
                     <div class="co2-val">12.4 kg</div>
                     <div class="co2-label">CO₂ spart denne måneden</div>
+                    <div class="co2-label">Dette tilsvarer 80-100km bil!</div>
                 </div>
             </div>
 
@@ -801,7 +889,7 @@
                     <div class="ai-icon-box" style="background:var(--danger-dim);">🌡️</div>
                     <div class="ai-card-body">
                         <div class="ai-card-title">Senk temperaturen til 20° i din kube</div>
-                        <div class="ai-card-desc">Sensoren viser 21.5° — forskning viser at 20° er optimalt for søvnkvalitet og energisparing. Estimert besparelse: <b>23 kr/mnd</b>.</div>
+                        <div class="ai-card-desc">Sensoren viser 21.5° — forskning viser at 20° er optimalt for søvnkvalitet og energisparing.</div>
                         <div class="ai-card-meta">
                             <span class="ai-tag save">-23 kr/mnd</span>
                             <span class="ai-tag auto">Automatisk</span>
@@ -855,186 +943,8 @@
             </div>
 
             <div style="text-align:center; margin-top:16px; padding: 12px; background: rgba(255,195,0,0.04); border-radius: 12px; border: 1px solid rgba(255,195,0,0.08);">
-                <div style="font-size:0.75rem; color:var(--text-dim);">Total mulig besparelse med alle forslag:</div>
-                <div style="font-size:1.5rem; font-weight:900; color:var(--honey); margin-top:4px;" id="total-save">136 kr/mnd</div>
-                <div style="font-size:0.65rem; color:var(--text-dim); margin-top:2px;">+ 125 🍯 i belønning</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========== STUDENT TAB 3 — INNSIKT ========== -->
-    <section id="tab-innsikt" class="tab-content">
-        <div class="card">
-            <h3>🧠 Lærte Bruksmønstre</h3>
-            <p class="card-sub">Systemet har lært ditt ukentlige mønster fra 14 dagers sensordata</p>
-
-            <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:6px;">Opptatthet i din kube (farge = strømforbruk)</div>
-            <div class="pattern-grid" id="pattern-heat"></div>
-            <div class="pattern-labels">
-                <span>Man</span><span>Tir</span><span>Ons</span><span>Tor</span><span>Fre</span><span>Lør</span><span>Søn</span>
-            </div>
-            <div class="pattern-legend">
-                <span><span class="legend-dot" style="background:rgba(0,209,102,0.6)"></span>Lav</span>
-                <span><span class="legend-dot" style="background:rgba(255,195,0,0.7)"></span>Middels</span>
-                <span><span class="legend-dot" style="background:rgba(255,77,77,0.7)"></span>Høy</span>
-                <span><span class="legend-dot" style="background:rgba(100,116,139,0.3)"></span>Borte</span>
-            </div>
-
-            <div class="insight-card">
-                <div class="insight-title">📋 Ukesammendrag — Uke 7</div>
-                <ul class="insight-bullets">
-                    <li>📉 <span class="il">Strøm ned 12%</span> fra forrige uke</li>
-                    <li>🕐 <span class="il">Borte 42 timer</span> — sparemodus aktiv 38t (90%)</li>
-                    <li>🌡️ <span class="il">Snitttemp: 20.8°</span> — 0.7° lavere enn naboer</li>
-                    <li>💨 <span class="il">CO₂ alltid under 900 ppm</span> — god luftkvalitet</li>
-                    <li>🍯 <span class="il">+180 Honey tjent</span> — bra jobbet!</li>
-                </ul>
-            </div>
-
-            <div style="margin-top: 14px;">
-                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:6px;">📈 Prediksjon neste uke</div>
-                <div style="background:rgba(255,255,255,0.025); border-radius:12px; padding:14px; border: 1px solid rgba(255,255,255,0.04);">
-                    <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:8px;">
-                        <span>Estimert strømkostnad:</span>
-                        <strong style="color:var(--honey)">~52 kr</strong>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:8px;">
-                        <span>Estimert besparelse vs. snitt:</span>
-                        <strong style="color:var(--success)">-38%</strong>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
-                        <span>Potensielle Honey:</span>
-                        <strong style="color:var(--honey)">~90 🍯</strong>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3>🌍 Din Miljøpåvirkning</h3>
-            <p class="card-sub">CO₂-besparelse oversatt til forståelige tall</p>
-
-            <div class="impact-grid">
-                <div class="impact-item">
-                    <div class="impact-emoji">🌳</div>
-                    <div class="impact-val">2.1</div>
-                    <div class="impact-label">Trær plantet (ekvivalent)</div>
-                </div>
-                <div class="impact-item">
-                    <div class="impact-emoji">🚗</div>
-                    <div class="impact-val">48 km</div>
-                    <div class="impact-label">Bilkjøring unngått</div>
-                </div>
-                <div class="impact-item">
-                    <div class="impact-emoji">📱</div>
-                    <div class="impact-val">1 490</div>
-                    <div class="impact-label">Mobil-ladinger spart</div>
-                </div>
-            </div>
-
-            <div class="co2-stat">
-                <div class="co2-icon">🌍</div>
-                <div>
-                    <div class="co2-val">12.4 kg</div>
-                    <div class="co2-label">CO₂ spart denne måneden</div>
-                </div>
-            </div>
-
-            <!-- IoT Architecture Pipeline -->
-            <div style="margin-top:18px;">
-                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:10px;">🔗 Slik Fungerer Bee Efficient</div>
-                <div class="arch-flow">
-                    <div class="arch-node">
-                        <div class="arch-icon-box" style="background:var(--accent-dim);">📡</div>
-                        <div class="arch-label">IoT Sensorer</div>
-                    </div>
-                    <span class="arch-arrow">→</span>
-                    <div class="arch-node">
-                        <div class="arch-icon-box" style="background:var(--purple-dim);">🧠</div>
-                        <div class="arch-label">BeeAI Motor</div>
-                    </div>
-                    <span class="arch-arrow">→</span>
-                    <div class="arch-node">
-                        <div class="arch-icon-box" style="background:var(--warning-dim);">💡</div>
-                        <div class="arch-label">Smart Tiltak</div>
-                    </div>
-                    <span class="arch-arrow">→</span>
-                    <div class="arch-node">
-                        <div class="arch-icon-box" style="background:var(--success-dim);">✅</div>
-                        <div class="arch-label">Auto-handling</div>
-                    </div>
-                    <span class="arch-arrow">→</span>
-                    <div class="arch-node">
-                        <div class="arch-icon-box" style="background:rgba(255,195,0,0.12);">🍯</div>
-                        <div class="arch-label">Belønning</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Leaderboard -->
-            <div style="margin-top:16px;">
-                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:6px;">🏆 Toppliste — Februar 2026</div>
-                <div class="leaderboard">
-                    <div class="lb-row">
-                        <div class="lb-rank gold">1</div>
-                        <div class="lb-name">Kube 2A — Maria & Erik</div>
-                        <div class="lb-pts">1 240 🍯</div>
-                        <span class="lb-trend up">▲2</span>
-                    </div>
-                    <div class="lb-row">
-                        <div class="lb-rank silver">2</div>
-                        <div class="lb-name">Kube 7C — Jonas</div>
-                        <div class="lb-pts">980 🍯</div>
-                        <span class="lb-trend down">▼1</span>
-                    </div>
-                    <div class="lb-row">
-                        <div class="lb-rank bronze">3</div>
-                        <div class="lb-name">Kube 1D — Sara & Nils</div>
-                        <div class="lb-pts">870 🍯</div>
-                        <span class="lb-trend up">▲1</span>
-                    </div>
-                    <div class="lb-row you">
-                        <div class="lb-rank" style="background:var(--honey); color:#000;">4</div>
-                        <div class="lb-name">Kube 4B — <b>Du</b> 👈</div>
-                        <div class="lb-pts" id="lb-your-pts">450 🍯</div>
-                        <span class="lb-trend up">▲3</span>
-                    </div>
-                    <div class="lb-row">
-                        <div class="lb-rank">5</div>
-                        <div class="lb-name">Kube 5A — Lina</div>
-                        <div class="lb-pts">420 🍯</div>
-                        <span class="lb-trend down">▼2</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Automatic Actions Log -->
-            <div class="auto-actions">
-                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-top:14px; margin-bottom:8px;">🤖 Automatiske Handlinger — Siste 7 Dager</div>
-                <div class="auto-action-item">
-                    <div class="auto-icon">🌡️</div>
-                    <div class="auto-body">
-                        <div class="auto-title">Temp senket ved fravær (×12)</div>
-                        <div class="auto-desc">Automatisk 17° når du var borte</div>
-                    </div>
-                    <div class="auto-saved">-34 kr</div>
-                </div>
-                <div class="auto-action-item">
-                    <div class="auto-icon">💡</div>
-                    <div class="auto-body">
-                        <div class="auto-title">Lys dimmet ved dagslys (×8)</div>
-                        <div class="auto-desc">Lux-sensor detekterte nok dagslys</div>
-                    </div>
-                    <div class="auto-saved">-12 kr</div>
-                </div>
-                <div class="auto-action-item">
-                    <div class="auto-icon">🌀</div>
-                    <div class="auto-body">
-                        <div class="auto-title">Ventilasjon redusert (×5)</div>
-                        <div class="auto-desc">CO₂ under 700 ppm, trygt å redusere</div>
-                    </div>
-                    <div class="auto-saved">-18 kr</div>
-                </div>
+                <div style="font-size:0.75rem; color:var(--text-dim);">Total mulig opptjening med alle forslag:</div>
+                <div style="font-size:1.5rem; font-weight:900; color:var(--honey); margin-top:4px;" id="total-save">125 🍯 i belønning</div>
             </div>
         </div>
     </section>
@@ -1106,12 +1016,12 @@
     <section id="tab-admin-dash" class="tab-content">
         <div class="card full-span">
             <h3>📊 Driftsoversikt — Studentsamskipnaden i Stavanger</h3>
-            <p class="card-sub">Sanntids KPI-er for hele boligporteføljen — Februar 2026</p>
+            <p class="card-sub">Samlet oversikt for studentboliger og campus — Februar 2026</p>
 
             <div class="admin-kpi-grid">
                 <div class="admin-kpi">
                     <div class="admin-kpi-val" style="color:var(--admin-accent);">847</div>
-                    <div class="admin-kpi-label">Aktive enheter</div>
+                    <div class="admin-kpi-label">Studentboliger</div>
                     <div class="admin-kpi-change up">▲ 23 denne mnd</div>
                 </div>
                 <div class="admin-kpi">
@@ -1131,7 +1041,89 @@
                 </div>
             </div>
 
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <!-- === Studentboliger summary === -->
+            <div style="margin-top:16px; padding:16px; background:rgba(255,195,0,0.04); border-radius:14px; border: 1px solid rgba(255,195,0,0.12);">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                    <span style="font-size:1.1rem;">🏘️</span>
+                    <div style="font-weight:800; font-size:0.9rem;">Studentboliger</div>
+                    <span style="font-size:0.62rem; background:var(--honey); color:#000; padding:2px 8px; border-radius:6px; font-weight:800; margin-left:auto;">847 enheter · 4 bygg</span>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px;">
+                    <div style="background:rgba(255,255,255,0.025); border-radius:10px; padding:10px; text-align:center; border: 1px solid rgba(255,255,255,0.04);">
+                        <div style="font-size:0.62rem; color:var(--text-dim); font-weight:600;">Snitt forbruk</div>
+                        <div style="font-weight:900; font-size:1rem; color:var(--success);">-34%</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.025); border-radius:10px; padding:10px; text-align:center; border: 1px solid rgba(255,255,255,0.04);">
+                        <div style="font-size:0.62rem; color:var(--text-dim); font-weight:600;">Sparemodus-bruk</div>
+                        <div style="font-weight:900; font-size:1rem; color:var(--honey);">89%</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.025); border-radius:10px; padding:10px; text-align:center; border: 1px solid rgba(255,255,255,0.04);">
+                        <div style="font-size:0.62rem; color:var(--text-dim); font-weight:600;">Aktive KPIer</div>
+                        <div style="font-weight:900; font-size:1rem; color:var(--admin-accent);">78%</div>
+                    </div>
+                </div>
+                <div style="display:grid; gap:4px; margin-top:8px;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; padding:5px 8px; background:rgba(0,0,0,0.15); border-radius:6px;">
+                        <span>🏢 Stavanger Studentheim (214)</span>
+                        <span style="color:var(--success); font-weight:700;">Effektiv ✓</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; padding:5px 8px; background:rgba(0,0,0,0.15); border-radius:6px;">
+                        <span>🏘️ Ullandhaug Studentby (386)</span>
+                        <span style="color:var(--warning); font-weight:700;">Avvik ⚠️</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; padding:5px 8px; background:rgba(0,0,0,0.15); border-radius:6px;">
+                        <span>🏠 Bjergsted Studenthus (128)</span>
+                        <span style="color:var(--success); font-weight:700;">Effektiv ✓</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; padding:5px 8px; background:rgba(0,0,0,0.15); border-radius:6px;">
+                        <span>🏡 Hundvåg Studentboliger (119)</span>
+                        <span style="color:var(--success); font-weight:700;">Effektiv ✓</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === Campus / Universitetsbygg summary === -->
+            <div style="margin-top:12px; padding:16px; background:rgba(6,182,212,0.04); border-radius:14px; border: 1px solid rgba(6,182,212,0.12);">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                    <span style="font-size:1.1rem;">🎓</span>
+                    <div style="font-weight:800; font-size:0.9rem;">Campus / Universitetsbygg</div>
+                    <span style="font-size:0.62rem; background:var(--admin-accent); color:#fff; padding:2px 8px; border-radius:6px; font-weight:800; margin-left:auto;">5 bygg · UiS</span>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px;">
+                    <div style="background:rgba(255,255,255,0.025); border-radius:10px; padding:10px; text-align:center; border: 1px solid rgba(255,255,255,0.04);">
+                        <div style="font-size:0.62rem; color:var(--text-dim); font-weight:600;">Rom med sløsing</div>
+                        <div style="font-weight:900; font-size:1rem; color:var(--danger);">1</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.025); border-radius:10px; padding:10px; text-align:center; border: 1px solid rgba(255,255,255,0.04);">
+                        <div style="font-size:0.62rem; color:var(--text-dim); font-weight:600;">Auto-handlinger i dag</div>
+                        <div style="font-weight:900; font-size:1rem; color:var(--admin-accent);">5</div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.025); border-radius:10px; padding:10px; text-align:center; border: 1px solid rgba(255,255,255,0.04);">
+                        <div style="font-size:0.62rem; color:var(--text-dim); font-weight:600;">Spart i dag</div>
+                        <div style="font-weight:900; font-size:1rem; color:var(--success);">2 340 kr</div>
+                    </div>
+                </div>
+                <div style="display:grid; gap:4px; margin-top:8px;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; padding:5px 8px; background:rgba(0,0,0,0.15); border-radius:6px;">
+                        <span>📚 Aud. A — I bruk (34 pers.)</span>
+                        <span style="color:var(--success); font-weight:700;">OK ✓</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; padding:5px 8px; background:rgba(0,0,0,0.15); border-radius:6px;">
+                        <span>⚠️ Aud. B — TOMT, sløser 14.50 kr/t</span>
+                        <span style="color:var(--danger); font-weight:700;">Sløser ✗</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; padding:5px 8px; background:rgba(0,0,0,0.15); border-radius:6px;">
+                        <span>🔬 Lab 1 — 8 pers.</span>
+                        <span style="color:var(--success); font-weight:700;">OK ✓</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; padding:5px 8px; background:rgba(0,0,0,0.15); border-radius:6px;">
+                        <span>🍽️ Kantine · 🏢 Kontor</span>
+                        <span style="color:var(--success); font-weight:700;">Eco ✓</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top:16px;">
                 <div>
                     <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:8px;">⚡ Strømforbruk portefølje (kWh/dag)</div>
                     <div class="admin-chart-bars" id="admin-portfolio-chart"></div>
@@ -1165,15 +1157,15 @@
                 <div style="font-weight:700; font-size:0.85rem; margin-bottom:8px;">🚨 Aktive Avvik (3)</div>
                 <div style="display:grid; gap:6px;">
                     <div style="display:flex; justify-content:space-between; font-size:0.78rem; padding:6px 10px; background:rgba(0,0,0,0.2); border-radius:8px;">
-                        <span>⚠️ Stavanger Studentheim — Blokk C, Ventilasjon</span>
+                        <span>🏘️ Stavanger Studentheim — Blokk C, Ventilasjon</span>
                         <strong style="color:var(--danger)">+23 kWh/d</strong>
                     </div>
                     <div style="display:flex; justify-content:space-between; font-size:0.78rem; padding:6px 10px; background:rgba(0,0,0,0.2); border-radius:8px;">
-                        <span>⚠️ Ullandhaug Studentby — Bygg 7, Varmtvannsbereder</span>
+                        <span>🏘️ Ullandhaug Studentby — Bygg 7, Varmtvannsbereder</span>
                         <strong style="color:var(--danger)">+38 kWh/d</strong>
                     </div>
                     <div style="display:flex; justify-content:space-between; font-size:0.78rem; padding:6px 10px; background:rgba(0,0,0,0.2); border-radius:8px;">
-                        <span>⚠️ Campus SV — Aud. B, Lys/ventilasjon</span>
+                        <span>🎓 Campus SV — Aud. B, Lys/ventilasjon</span>
                         <strong style="color:var(--danger)">+14.50 kr/t</strong>
                     </div>
                 </div>
@@ -1181,11 +1173,34 @@
         </div>
     </section>
 
-    <!-- ========== ADMIN TAB 2 — BYGNINGER ========== -->
-    <section id="tab-admin-bygg" class="tab-content">
+    <!-- ========== ADMIN TAB 2A — STUDENTBOLIGER ========== -->
+    <section id="tab-admin-student" class="tab-content">
         <div class="card">
-            <h3>🏘️ Boligportefølje</h3>
-            <p class="card-sub">Oversikt over alle studentboliger og universitetsbygg</p>
+            <h3>🏘️ Studentboliger — Portefølje</h3>
+            <p class="card-sub">Alle studentboliger under SiS Bolig — energistatus og drift</p>
+
+            <div class="admin-kpi-grid">
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--admin-accent);">847</div>
+                    <div class="admin-kpi-label">Totalt enheter</div>
+                    <div class="admin-kpi-change up">4 boligkompleks</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--success);">-34%</div>
+                    <div class="admin-kpi-label">Snitt reduksjon</div>
+                    <div class="admin-kpi-change up">▲ 6% fra jan</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--honey);">204</div>
+                    <div class="admin-kpi-label">Sensorer online</div>
+                    <div class="admin-kpi-change up">99.5% oppetid</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--success);">89%</div>
+                    <div class="admin-kpi-label">Sparemodus-bruk</div>
+                    <div class="admin-kpi-change up">▲ 12%</div>
+                </div>
+            </div>
 
             <div class="building-list">
                 <div class="building-item" onclick="showToast('📍 Åpner detaljvisning for Stavanger Studentheim...', '')">
@@ -1221,11 +1236,129 @@
                     <div class="building-status good">Effektiv</div>
                 </div>
             </div>
+
+            <!-- Energifordeling studentboliger -->
+            <div style="margin-top:16px;">
+                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:8px;">⚡ Energifordeling — Studentboliger totalt</div>
+                <div class="energy-flow">
+                    <div class="flow-row">
+                        <span class="flow-label">🌡️ Oppvarming</span>
+                        <div class="flow-bar-bg">
+                            <div class="flow-bar-fill" style="width:52%; background: linear-gradient(90deg, #f59e0b, #fbbf24);">52%</div>
+                        </div>
+                    </div>
+                    <div class="flow-row">
+                        <span class="flow-label">🌀 Ventilasjon</span>
+                        <div class="flow-bar-bg">
+                            <div class="flow-bar-fill" style="width:21%; background: linear-gradient(90deg, #a78bfa, #c4b5fd);">21%</div>
+                        </div>
+                    </div>
+                    <div class="flow-row">
+                        <span class="flow-label">💡 Belysning</span>
+                        <div class="flow-bar-bg">
+                            <div class="flow-bar-fill" style="width:15%; background: linear-gradient(90deg, #3b82f6, #60a5fa);">15%</div>
+                        </div>
+                    </div>
+                    <div class="flow-row">
+                        <span class="flow-label">🔌 Utstyr</span>
+                        <div class="flow-bar-bg">
+                            <div class="flow-bar-fill" style="width:12%; background: linear-gradient(90deg, #64748b, #94a3b8);">12%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Studentbolig varsler -->
+            <div style="margin-top:14px; padding:14px; background:var(--danger-dim); border-radius:14px; border: 1px solid rgba(255,77,77,0.15);">
+                <div style="font-weight:700; font-size:0.85rem; margin-bottom:8px;">🚨 Aktive Avvik — Studentboliger</div>
+                <div style="display:grid; gap:6px;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.78rem; padding:6px 10px; background:rgba(0,0,0,0.2); border-radius:8px;">
+                        <span>⚠️ Stavanger Studentheim — Blokk C, Ventilasjon</span>
+                        <strong style="color:var(--danger)">+23 kWh/d</strong>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.78rem; padding:6px 10px; background:rgba(0,0,0,0.2); border-radius:8px;">
+                        <span>⚠️ Ullandhaug — Bygg 7, Varmtvannsbereder</span>
+                        <strong style="color:var(--danger)">+38 kWh/d</strong>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="card">
-            <h3>🏢 Universitetsbygg — UiS Campus</h3>
-            <p class="card-sub">Live romstatus fra bevegelse-, temp- og CO₂-sensorer</p>
+            <h3>📊 Beboerengasjement — Studentboliger</h3>
+            <p class="card-sub">Aggregert aktivitet og bruk av Bee Efficient i boligporteføljen</p>
+
+            <div style="background:rgba(255,255,255,0.025); border-radius:12px; padding:14px; border: 1px solid rgba(255,255,255,0.04); margin-top:8px;">
+                <div style="display:flex; justify-content:space-between; font-size:0.78rem; margin-bottom:10px;">
+                    <span>Aktive brukere (siste 7d):</span>
+                    <strong style="color:var(--admin-accent)">78%</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.78rem; margin-bottom:10px;">
+                    <span>AI-forslag implementert:</span>
+                    <strong style="color:var(--success)">62%</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.78rem; margin-bottom:10px;">
+                    <span>Gjennomsnitt Honey/beboer:</span>
+                    <strong style="color:var(--honey)">520 🍯</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:0.78rem;">
+                    <span>Bortreistmodus-bruk:</span>
+                    <strong style="color:var(--success)">89%</strong>
+                </div>
+            </div>
+
+            <!-- Kommunikasjon -->
+            <div style="margin-top:14px;">
+                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:8px;">📢 Siste kampanjer</div>
+                <div class="auto-action-item">
+                    <div class="auto-icon">🎯</div>
+                    <div class="auto-body">
+                        <div class="auto-title">"Vinterchallenge — Spar 20% i feb"</div>
+                        <div class="auto-desc">Sendt 1. feb · Åpnet: 72% · Deltakende kuber: 412</div>
+                    </div>
+                    <div class="auto-saved" style="color:var(--admin-accent); background:var(--admin-accent-dim);">Aktiv</div>
+                </div>
+                <div class="auto-action-item">
+                    <div class="auto-icon">🌙</div>
+                    <div class="auto-body">
+                        <div class="auto-title">"Nattsenking = Gratis kaffe"</div>
+                        <div class="auto-desc">Sendt 20. jan · Åpnet: 84% · Kuber med nattmodus: 68%</div>
+                    </div>
+                    <div class="auto-saved" style="color:var(--success); background:var(--success-dim);">Fullført</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ADMIN TAB 2B — CAMPUS / UNIVERSITETSBYGG ========== -->
+    <section id="tab-admin-campus" class="tab-content">
+        <div class="card">
+            <h3>🎓 Campus — UiS Universitetsbygg</h3>
+            <p class="card-sub">Live romstatus fra bevegelse-, temp- og CO₂-sensorer i undervisnings- og fellesbygg</p>
+
+            <div class="admin-kpi-grid">
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--admin-accent);">5</div>
+                    <div class="admin-kpi-label">Bygninger</div>
+                    <div class="admin-kpi-change up">Campus Ullandhaug</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--danger);">1</div>
+                    <div class="admin-kpi-label">Rom med sløsing</div>
+                    <div class="admin-kpi-change down">Krever handling</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--success);">5</div>
+                    <div class="admin-kpi-label">Auto-handlinger i dag</div>
+                    <div class="admin-kpi-change up">Spart 2 340 kr</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--honey);">42</div>
+                    <div class="admin-kpi-label">Sensorer online</div>
+                    <div class="admin-kpi-change up">100% oppetid</div>
+                </div>
+            </div>
+
             <div class="blueprint">
                 <div class="room good" style="grid-area: r1">
                     Auditorium A<br><small>I bruk — 34 pers.</small>
@@ -1271,9 +1404,14 @@
                 <b>Bygget er nå 100% effektivt!</b><br>
                 <small style="color:var(--text-dim)">Lys → 10% · Ventilasjon → Minimum · Temp → 19°</small>
             </div>
+        </div>
+
+        <div class="card">
+            <h3>⚡ Energi & Automatikk — Campus</h3>
+            <p class="card-sub">Energifordeling og automatiske hendelser for universitetsbygg</p>
 
             <!-- Energifordeling -->
-            <div style="margin-top:16px;">
+            <div style="margin-top:8px;">
                 <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:8px;">⚡ Energifordeling — 2. Etasje</div>
                 <div class="energy-flow">
                     <div class="flow-row">
@@ -1305,9 +1443,56 @@
                 </div>
             </div>
 
+            <!-- Bygningsliste campus -->
+            <div style="margin-top:16px;">
+                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:8px;">🏛️ Campusbygg under overvåking</div>
+                <div class="building-list">
+                    <div class="building-item">
+                        <div class="building-icon" style="background:var(--accent-dim);">📚</div>
+                        <div class="building-body">
+                            <div class="building-name">Sosialvitenskap (SV)</div>
+                            <div class="building-meta">2 auditorier · 6 grupperom · 18 sensorer</div>
+                        </div>
+                        <div class="building-status bad" style="background:var(--danger-dim); color:var(--danger);">1 avvik</div>
+                    </div>
+                    <div class="building-item">
+                        <div class="building-icon" style="background:var(--success-dim);">🔬</div>
+                        <div class="building-body">
+                            <div class="building-name">Teknisk-Naturvitenskapelig (TN)</div>
+                            <div class="building-meta">4 labber · 3 auditorier · 12 sensorer</div>
+                        </div>
+                        <div class="building-status good">Effektiv</div>
+                    </div>
+                    <div class="building-item">
+                        <div class="building-icon" style="background:var(--success-dim);">🏥</div>
+                        <div class="building-body">
+                            <div class="building-name">Helsefag (HF)</div>
+                            <div class="building-meta">1 auditorium · 4 øvingslokaler · 8 sensorer</div>
+                        </div>
+                        <div class="building-status good">Effektiv</div>
+                    </div>
+                    <div class="building-item">
+                        <div class="building-icon" style="background:var(--success-dim);">📖</div>
+                        <div class="building-body">
+                            <div class="building-name">Bibliotek & Læringssenteret</div>
+                            <div class="building-meta">3 etasjer · Leseplasser · 6 sensorer</div>
+                        </div>
+                        <div class="building-status good">Effektiv</div>
+                    </div>
+                    <div class="building-item">
+                        <div class="building-icon" style="background:var(--success-dim);">🍽️</div>
+                        <div class="building-body">
+                            <div class="building-name">Kantine & Fellesarealer</div>
+                            <div class="building-meta">Kantine · Lounge · 4 sensorer</div>
+                        </div>
+                        <div class="building-status good">Eco-modus</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- IoT Timeline -->
             <div class="iot-timeline">
-                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-top:12px; margin-bottom:2px;">⏱ Automatiske Hendelser i Dag</div>
+                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-top:12px; margin-bottom:2px;">⏱ Automatiske Hendelser i Dag — Campus</div>
                 <div class="iot-event auto">
                     <span class="iot-time">07:58</span>
                     <span>🤖 Aud. A — Varme økt til 21° (forelesning kl 08)</span>
@@ -1427,78 +1612,98 @@
         </div>
     </section>
 
-    <!-- ========== ADMIN TAB 4 — BEBOERE ========== -->
+    <!-- ========== ADMIN TAB 4 — BOLIGOVERSIKT ========== -->
     <section id="tab-admin-beboere" class="tab-content">
         <div class="card">
-            <h3>👥 Beboerengasjement</h3>
-            <p class="card-sub">Anonymisert oversikt over hvordan beboere bruker systemet</p>
+            <h3>🏘️ Boligoversikt — Per Kube</h3>
+            <p class="card-sub">Aggregert energidata per kube, etasje og boligblokk — uten sporing av enkeltpersoner</p>
 
             <div class="admin-kpi-grid">
                 <div class="admin-kpi">
-                    <div class="admin-kpi-val" style="color:var(--admin-accent);">78%</div>
-                    <div class="admin-kpi-label">Aktive brukere</div>
-                    <div class="admin-kpi-change up">▲ 5% fra jan</div>
+                    <div class="admin-kpi-val" style="color:var(--admin-accent);">847</div>
+                    <div class="admin-kpi-label">Totalt enheter</div>
+                    <div class="admin-kpi-change up">4 bygg</div>
                 </div>
                 <div class="admin-kpi">
-                    <div class="admin-kpi-val" style="color:var(--success);">89%</div>
-                    <div class="admin-kpi-label">Bruker bortmodus</div>
+                    <div class="admin-kpi-val" style="color:var(--success);">-34%</div>
+                    <div class="admin-kpi-label">Snitt strømreduksjon</div>
+                    <div class="admin-kpi-change up">▲ 6% fra jan</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--honey);">20.4°</div>
+                    <div class="admin-kpi-label">Snitt temperatur</div>
+                    <div class="admin-kpi-change up">Innenfor mål</div>
+                </div>
+                <div class="admin-kpi">
+                    <div class="admin-kpi-val" style="color:var(--purple);">89%</div>
+                    <div class="admin-kpi-label">Sparemodus-bruk</div>
                     <div class="admin-kpi-change up">▲ 12%</div>
                 </div>
-                <div class="admin-kpi">
-                    <div class="admin-kpi-val" style="color:var(--honey);">520</div>
-                    <div class="admin-kpi-label">Snitt Honey/beboer</div>
-                    <div class="admin-kpi-change up">▲ 80</div>
-                </div>
-                <div class="admin-kpi">
-                    <div class="admin-kpi-val" style="color:var(--purple);">62%</div>
-                    <div class="admin-kpi-label">AI-forslag tatt</div>
-                    <div class="admin-kpi-change up">▲ 8%</div>
-                </div>
             </div>
 
-            <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-top:12px; margin-bottom:8px;">🏆 Topp Sparere — Februar 2026</div>
-            <div class="engagement-row">
-                <div class="engagement-avatar" style="background:linear-gradient(135deg, #fbbf24, #f59e0b); color:#000;">1</div>
-                <div class="engagement-body">
-                    <div class="engagement-name">Kube 2A — Stavanger Studentheim</div>
-                    <div class="engagement-meta">214 kWh spart · Alle AI-forslag tatt · 47 dager streak</div>
+            <!-- Bygg-nivå oversikt -->
+            <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-top:12px; margin-bottom:8px;">🏢 Energistatus per Bygg</div>
+            <div class="building-list">
+                <div class="building-item">
+                    <div class="building-icon" style="background:var(--success-dim);">🏢</div>
+                    <div class="building-body">
+                        <div class="building-name">Stavanger Studentheim</div>
+                        <div class="building-meta">214 kuber · 12 etasjer · Snitt: -38% forbruk</div>
+                    </div>
+                    <div class="building-status good">Effektiv</div>
                 </div>
-                <div class="engagement-stat">
-                    <div class="engagement-val" style="color:var(--honey);">1 240 🍯</div>
-                    <div class="engagement-label">besparelse: -48%</div>
+                <div class="building-item">
+                    <div class="building-icon" style="background:var(--warning-dim);">🏘️</div>
+                    <div class="building-body">
+                        <div class="building-name">Ullandhaug Studentby</div>
+                        <div class="building-meta">386 kuber · 8 bygg · Snitt: -29% forbruk</div>
+                    </div>
+                    <div class="building-status warning">Kan forbedres</div>
+                </div>
+                <div class="building-item">
+                    <div class="building-icon" style="background:var(--success-dim);">🏠</div>
+                    <div class="building-body">
+                        <div class="building-name">Bjergsted Studenthus</div>
+                        <div class="building-meta">128 kuber · 4 bygg · Snitt: -36% forbruk</div>
+                    </div>
+                    <div class="building-status good">Effektiv</div>
+                </div>
+                <div class="building-item">
+                    <div class="building-icon" style="background:var(--success-dim);">🏡</div>
+                    <div class="building-body">
+                        <div class="building-name">Hundvåg Studentboliger</div>
+                        <div class="building-meta">119 kuber · 3 bygg · Snitt: -33% forbruk</div>
+                    </div>
+                    <div class="building-status good">Effektiv</div>
                 </div>
             </div>
-            <div class="engagement-row">
-                <div class="engagement-avatar" style="background:linear-gradient(135deg, #94a3b8, #64748b); color:#fff;">2</div>
-                <div class="engagement-body">
-                    <div class="engagement-name">Kube 7C — Ullandhaug Studentby</div>
-                    <div class="engagement-meta">186 kWh spart · Nattmodus aktiv · 31 dager streak</div>
+            <!-- Kube-type sammenligning -->
+            <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-top:16px; margin-bottom:8px;">🔲 Snittforbruk per Kubetype</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+                <div class="admin-kpi" style="padding:14px;">
+                    <div style="font-size:1.2rem; margin-bottom:4px;">🔲</div>
+                    <div style="font-weight:900; font-size:1rem; color:var(--success);">0.24 kW</div>
+                    <div style="font-size:0.62rem; color:var(--text-dim); font-weight:600; margin-top:2px;">Enkeltkube (1-roms)</div>
+                    <div style="font-size:0.58rem; color:var(--success); font-weight:700;">-36% vs. snitt</div>
                 </div>
-                <div class="engagement-stat">
-                    <div class="engagement-val" style="color:var(--honey);">980 🍯</div>
-                    <div class="engagement-label">besparelse: -42%</div>
+                <div class="admin-kpi" style="padding:14px;">
+                    <div style="font-size:1.2rem; margin-bottom:4px;">🔲🔲</div>
+                    <div style="font-weight:900; font-size:1rem; color:var(--honey);">0.41 kW</div>
+                    <div style="font-size:0.62rem; color:var(--text-dim); font-weight:600; margin-top:2px;">Dobbelkube (2-roms)</div>
+                    <div style="font-size:0.58rem; color:var(--honey); font-weight:700;">-31% vs. snitt</div>
+                </div>
+                <div class="admin-kpi" style="padding:14px;">
+                    <div style="font-size:1.2rem; margin-bottom:4px;">🏠</div>
+                    <div style="font-weight:900; font-size:1rem; color:var(--honey);">0.58 kW</div>
+                    <div style="font-size:0.62rem; color:var(--text-dim); font-weight:600; margin-top:2px;">Familiebolig (3-roms)</div>
+                    <div style="font-size:0.58rem; color:var(--honey); font-weight:700;">-28% vs. snitt</div>
                 </div>
             </div>
-            <div class="engagement-row">
-                <div class="engagement-avatar" style="background:linear-gradient(135deg, #d97706, #b45309); color:#fff;">3</div>
-                <div class="engagement-body">
-                    <div class="engagement-name">Kube 1D — Bjergsted Studenthus</div>
-                    <div class="engagement-meta">168 kWh spart · Bortmodus 90% · 28 dager streak</div>
-                </div>
-                <div class="engagement-stat">
-                    <div class="engagement-val" style="color:var(--honey);">870 🍯</div>
-                    <div class="engagement-label">besparelse: -39%</div>
-                </div>
-            </div>
-
-            <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-top:16px; margin-bottom:8px;">📊 Engasjementstrend (aktive daglig)</div>
-            <div class="admin-chart-bars" id="admin-engagement-chart"></div>
-            <div class="admin-chart-labels"><span>Uke 1</span><span>Uke 2</span><span>Uke 3</span><span>Uke 4</span><span>Uke 5</span><span>Uke 6</span><span>Uke 7</span></div>
         </div>
 
         <div class="card">
-            <h3>📬 Kommunikasjon</h3>
-            <p class="card-sub">Push-varsler og kampanjer til beboere</p>
+            <h3>📬 Kommunikasjon & Kampanjer</h3>
+            <p class="card-sub">Push-varsler og energikampanjer til boliger (aldri personrettet)</p>
 
             <div style="background:rgba(255,255,255,0.025); border-radius:14px; padding:16px; border: 1px solid rgba(255,255,255,0.04); margin-top:8px;">
                 <div style="font-weight:700; font-size:0.82rem; margin-bottom:10px;">📢 Siste kampanjer</div>
@@ -1506,7 +1711,7 @@
                     <div class="auto-icon">🎯</div>
                     <div class="auto-body">
                         <div class="auto-title">"Vinterchallenge — Spar 20% i feb"</div>
-                        <div class="auto-desc">Sendt 1. feb · Åpnet: 72% · Deltakere: 412</div>
+                        <div class="auto-desc">Sendt 1. feb · Åpnet: 72% · Deltakende kuber: 412</div>
                     </div>
                     <div class="auto-saved" style="color:var(--admin-accent); background:var(--admin-accent-dim);">Aktiv</div>
                 </div>
@@ -1514,29 +1719,43 @@
                     <div class="auto-icon">🌙</div>
                     <div class="auto-body">
                         <div class="auto-title">"Nattsenking = Gratis kaffe"</div>
-                        <div class="auto-desc">Sendt 20. jan · Åpnet: 84% · Aktiverte nattmodus: 68%</div>
+                        <div class="auto-desc">Sendt 20. jan · Åpnet: 84% · Kuber med nattmodus: 68%</div>
                     </div>
                     <div class="auto-saved" style="color:var(--success); background:var(--success-dim);">Fullført</div>
                 </div>
             </div>
 
             <div style="margin-top:14px;">
-                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:8px;">🎓 Inaktive beboere — Trenger oppfølging</div>
+                <div style="font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:8px;">📊 Inaktive boliger — Trenger oppfølging</div>
                 <div class="engagement-row" style="border-color:rgba(255,77,77,0.15);">
                     <div class="engagement-avatar" style="background:var(--danger-dim);">⚠️</div>
                     <div class="engagement-body">
-                        <div class="engagement-name">22 enheter ikke logget inn siste 14 dager</div>
+                        <div class="engagement-name">22 kuber uten app-aktivitet siste 14d</div>
                         <div class="engagement-meta">Ullandhaug: 14 · Stavanger Studentheim: 5 · Bjergsted: 3</div>
                     </div>
-                    <button class="alert-action" onclick="showToast('📧 Påminnelsesvarsel sendt til 22 beboere', 'success')">Send Påminnelse</button>
+                    <button class="alert-action" onclick="showToast('📧 Påminnelse sendt til berørte boliger', 'success')">Send Påminnelse</button>
                 </div>
                 <div class="engagement-row" style="border-color:rgba(255,195,0,0.15);">
                     <div class="engagement-avatar" style="background:var(--warning-dim);">💡</div>
                     <div class="engagement-body">
-                        <div class="engagement-name">38 enheter har ikke tatt noen AI-forslag</div>
+                        <div class="engagement-name">38 kuber uten AI-forslag implementert</div>
                         <div class="engagement-meta">Potensielt 6 400 kr/mnd i uoppdaget besparelse</div>
                     </div>
-                    <button class="alert-action" onclick="showToast('📧 Motivasjonskampanje sendt med personlige tips', 'success')">Start Kampanje</button>
+                    <button class="alert-action" onclick="showToast('📧 Motivasjonskampanje sendt med energitips', 'success')">Start Kampanje</button>
+                </div>
+            </div>
+
+            <div class="privacy-banner" style="margin-top:14px;">
+                <div class="privacy-icon">🔒</div>
+                <div>
+                    <div class="privacy-title">Ingen sporing av enkeltpersoner</div>
+                    <div class="privacy-desc">Driftsvisningen viser kun aggregert data per kube, etasje og bygg. Ingen personlig informasjon er tilgjengelig for driftspersonell.</div>
+                    <div class="privacy-tags">
+                        <span class="p-tag">Kubebasert</span>
+                        <span class="p-tag">Aggregert</span>
+                        <span class="p-tag">Anonymisert</span>
+                        <span class="p-tag">GDPR</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1612,128 +1831,6 @@
         </div>
     </section>
 
-    <!-- ========== ADMIN TAB 6 — INNSTILLINGER / POLICY ========== -->
-    <section id="tab-admin-policy" class="tab-content">
-        <div class="card">
-            <h3>⚙️ Energipolicyer</h3>
-            <p class="card-sub">Sentrale regler som gjelder hele boligporteføljen</p>
-
-            <div style="margin-top:8px;">
-                <div class="policy-row">
-                    <div class="policy-info">
-                        <div class="policy-name">🌙 Obligatorisk nattsenking</div>
-                        <div class="policy-desc">Senk temperatur til 19° mellom 23:00–06:00 i alle fellesarealer</div>
-                    </div>
-                    <button class="policy-toggle on" onclick="togglePolicy(this)"></button>
-                </div>
-
-                <div class="policy-row">
-                    <div class="policy-info">
-                        <div class="policy-name">🌡️ Maks temperatur — 23°</div>
-                        <div class="policy-desc">Beboere kan ikke sette termostat over 23° (anbefaling: 20–21°)</div>
-                    </div>
-                    <button class="policy-toggle on" onclick="togglePolicy(this)"></button>
-                </div>
-
-                <div class="policy-row">
-                    <div class="policy-info">
-                        <div class="policy-name">💡 Auto-lys i fellesareal</div>
-                        <div class="policy-desc">Bevegelsesstyrt belysning i ganger, vaskerom og fellesareal</div>
-                    </div>
-                    <button class="policy-toggle on" onclick="togglePolicy(this)"></button>
-                </div>
-
-                <div class="policy-row">
-                    <div class="policy-info">
-                        <div class="policy-name">✈️ Auto-sparemodus ved fravær</div>
-                        <div class="policy-desc">Aktiver sparemodus automatisk etter 4 timer uten bevegelse i enhet</div>
-                    </div>
-                    <button class="policy-toggle on" onclick="togglePolicy(this)"></button>
-                </div>
-
-                <div class="policy-row">
-                    <div class="policy-info">
-                        <div class="policy-name">📊 Spotpris-optimalisering</div>
-                        <div class="policy-desc">La BeeAI flytte oppvarming til billigere timer (natt/helg)</div>
-                    </div>
-                    <button class="policy-toggle on" onclick="togglePolicy(this)"></button>
-                </div>
-
-                <div class="policy-row">
-                    <div class="policy-info">
-                        <div class="policy-name">🌀 CO₂-basert ventilasjon</div>
-                        <div class="policy-desc">Tilpass ventilasjon automatisk etter CO₂-nivå istedenfor fast kjøring</div>
-                    </div>
-                    <button class="policy-toggle on" onclick="togglePolicy(this)"></button>
-                </div>
-
-                <div class="policy-row">
-                    <div class="policy-info">
-                        <div class="policy-name">🔔 Beboer-energivarsel</div>
-                        <div class="policy-desc">Send push-varsel til beboere som bruker >30% mer enn snittet</div>
-                    </div>
-                    <button class="policy-toggle" onclick="togglePolicy(this)"></button>
-                </div>
-
-                <div class="policy-row">
-                    <div class="policy-info">
-                        <div class="policy-name">🏢 Tom-rom deteksjon (uni)</div>
-                        <div class="policy-desc">Automatisk reduksjon av lys/varme/vent i tomme undervisningsrom</div>
-                    </div>
-                    <button class="policy-toggle on" onclick="togglePolicy(this)"></button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <h3>🍯 Honey-program Innstillinger</h3>
-            <p class="card-sub">Konfigurer belønningssystemet for beboere</p>
-
-            <div style="margin-top:8px;">
-                <div class="policy-row">
-                    <div class="policy-info">
-                        <div class="policy-name">🍯 Honey belønningsprogram</div>
-                        <div class="policy-desc">Aktiver gamification-belønninger for energisparing</div>
-                    </div>
-                    <button class="policy-toggle on" onclick="togglePolicy(this)"></button>
-                </div>
-                <div class="policy-row">
-                    <div class="policy-info">
-                        <div class="policy-name">☕ SiS Kafé-partnerskap</div>
-                        <div class="policy-desc">Tillat innløsing av Honey hos SiS kantine/kafé</div>
-                    </div>
-                    <button class="policy-toggle on" onclick="togglePolicy(this)"></button>
-                </div>
-                <div class="policy-row">
-                    <div class="policy-info">
-                        <div class="policy-name">🏆 Toppliste synlighet</div>
-                        <div class="policy-desc">Vis toppliste til beboere (anonymisert kubennavn)</div>
-                    </div>
-                    <button class="policy-toggle on" onclick="togglePolicy(this)"></button>
-                </div>
-            </div>
-
-            <div style="margin-top:16px; font-size:0.72rem; font-weight:700; color:var(--text-dim); margin-bottom:8px;">📝 Kontaktinformasjon</div>
-            <div style="background:rgba(255,255,255,0.025); border-radius:12px; padding:14px; border: 1px solid rgba(255,255,255,0.04);">
-                <div style="display:flex; justify-content:space-between; font-size:0.78rem; margin-bottom:8px;">
-                    <span>Organisasjon:</span>
-                    <strong>Studentsamskipnaden i Stavanger (SiS)</strong>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:0.78rem; margin-bottom:8px;">
-                    <span>Driftsansvarlig:</span>
-                    <strong>Ola Nordmann</strong>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:0.78rem; margin-bottom:8px;">
-                    <span>Antall boliger:</span>
-                    <strong>847 enheter</strong>
-                </div>
-                <div style="display:flex; justify-content:space-between; font-size:0.78rem;">
-                    <span>Sensorer installert:</span>
-                    <strong>204 (24.1 per 100 enhet)</strong>
-                </div>
-            </div>
-        </div>
-    </section>
 
 </main>
 
@@ -1756,7 +1853,6 @@
         const studentBtn = document.getElementById('role-student');
         const adminBtn = document.getElementById('role-admin');
         const honeyPill = document.getElementById('honey-pill-wrap');
-        const sensorCount = document.getElementById('sensor-count');
 
         // Hide all tabs
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -1768,7 +1864,6 @@
             studentBtn.className = 'role-btn';
             adminBtn.className = 'role-btn active-admin';
             honeyPill.style.display = 'none';
-            sensorCount.textContent = '204';
 
             // Activate first admin tab
             document.getElementById('tab-admin-dash').classList.add('active');
@@ -1784,7 +1879,6 @@
             studentBtn.className = 'role-btn active-student';
             adminBtn.className = 'role-btn';
             honeyPill.style.display = 'flex';
-            sensorCount.textContent = '12';
 
             // Activate first student tab
             document.getElementById('tab-hybel').classList.add('active');
@@ -1795,48 +1889,6 @@
             showToast('🎓 Student-modus — Din personlige hybel', '');
         }
     }
-
-    // ========== SPARKLINE ==========
-    function buildSparkline() {
-        const el = document.getElementById('sparkline');
-        const data = [15, 12, 8, 4, 3, 3, 5, 18, 28, 35, 30, 25, 22, 20, 19, 24, 28, 32, 30, 26, 22, 18, 16, 34];
-        const max = Math.max(...data);
-        el.innerHTML = data.map((v, i) =>
-            `<div class="spark-bar ${i === data.length - 1 ? 'current' : ''}" style="height:${Math.max((v / max) * 100, 4)}%"></div>`
-        ).join('');
-    }
-    buildSparkline();
-
-    // ========== HEATMAP PATTERN ==========
-    function buildPattern() {
-        const el = document.getElementById('pattern-heat');
-        const labels = ['00–04', '04–08', '08–12', '12–16', '16–20', '20–24'];
-        const data = [
-            [0, 0, 0, 0, 0, 0, 0],
-            [1, 1, 1, 1, 1, 0, 0],
-            [0, 0, 0, 0, 0, 2, 1],
-            [0, 0, 0, 0, 0, 1, 2],
-            [2, 2, 3, 2, 1, 2, 2],
-            [2, 1, 2, 1, 3, 2, 1],
-        ];
-        const colors = [
-            'rgba(100,116,139,0.2)',
-            'rgba(0,209,102,0.45)',
-            'rgba(255,195,0,0.55)',
-            'rgba(255,77,77,0.6)',
-        ];
-        const tipLabels = ['Borte/Sovende', 'Lavt forbruk', 'Middels', 'Høyt forbruk'];
-        let html = '';
-        data.forEach((row, ri) => {
-            row.forEach((val, ci) => {
-                html += `<div class="pattern-cell" style="background:${colors[val]}">
-                    <span class="pt-tip">${labels[ri]}: ${tipLabels[val]}</span>
-                </div>`;
-            });
-        });
-        el.innerHTML = html;
-    }
-    buildPattern();
 
     // ========== ADMIN CHARTS ==========
     function buildAdminCharts() {
@@ -1860,32 +1912,40 @@
             ).join('');
         }
 
-        // Engagement chart
-        const engageEl = document.getElementById('admin-engagement-chart');
-        if (engageEl) {
-            const data = [58, 62, 65, 68, 72, 75, 78];
-            const max = 100;
-            engageEl.innerHTML = data.map((v, i) =>
-                `<div class="admin-chart-bar" style="height:${(v / max) * 100}%; background: linear-gradient(to top, ${i === data.length - 1 ? '#a78bfa' : 'rgba(167,139,250,0.3)'}, ${i === data.length - 1 ? '#c4b5fd' : 'rgba(167,139,250,0.15)'});"></div>`
-            ).join('');
-        }
+        // Engagement chart (removed - no longer tracking individuals)
     }
     buildAdminCharts();
 
-    // ========== SIMULATED LIVE SENSORS ==========
-    function simulateSensors() {
-        const power = document.getElementById('power-val');
-        const humidity = document.getElementById('humidity-val');
-        const co2 = document.getElementById('air-val');
-        const lux = document.getElementById('lux-val');
+    // ========== SIMULATED LIVE COMFORT ==========
+    function simulateComfort() {
+        const score = document.getElementById('comfort-score');
+        const headline = document.getElementById('comfort-headline');
+        const desc = document.getElementById('comfort-desc');
+        const arc = document.getElementById('gauge-arc');
+        const tempDisp = document.getElementById('temp-display');
+
+        const vibes = [
+            { s: 86, emoji: '😊', h: 'Perfekt stemning!', d: 'Luften er frisk, temperaturen behagelig, og lyset er fint. BeeAI styrer alt i bakgrunnen.', t: '21.5°' },
+            { s: 88, emoji: '😄', h: 'Helt topp!', d: 'Alt er optimalt — luft, lys og varme er tilpasset deg automatisk.', t: '21.3°' },
+            { s: 84, emoji: '😊', h: 'Veldig bra!', d: 'Frisk luft og god temperatur. Lyset justeres etter dagslysnivå.', t: '21.6°' },
+            { s: 90, emoji: '🤩', h: 'Helt perfekt!', d: 'Best mulige komfort akkurat nå. BeeAI har optimalisert alt.', t: '21.4°' },
+        ];
+
+        let idx = 0;
         setInterval(() => {
-            power.textContent = (0.34 + (Math.random() - 0.5) * 0.06).toFixed(2);
-            humidity.textContent = (44 + Math.floor((Math.random() - 0.5) * 3)) + '%';
-            co2.textContent = Math.floor(623 + (Math.random() - 0.5) * 40);
-            lux.textContent = Math.floor(320 + (Math.random() - 0.5) * 30);
-        }, 3500);
+            idx = Math.floor(Math.random() * vibes.length);
+            const v = vibes[idx];
+            if (score) score.textContent = v.s;
+            if (headline) headline.textContent = v.emoji + ' ' + v.h;
+            if (desc) desc.textContent = v.d;
+            if (tempDisp) tempDisp.textContent = v.t;
+            if (arc) {
+                const offset = 314 - (314 * v.s / 100);
+                arc.setAttribute('stroke-dashoffset', offset);
+            }
+        }, 5000);
     }
-    simulateSensors();
+    simulateComfort();
 
     // ========== TOAST ==========
     function showToast(msg, type = '') {
@@ -1913,25 +1973,29 @@
         document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const temp = document.getElementById('temp-display');
-        const label = document.getElementById('temp-label');
-        const bar = document.getElementById('my-bar');
+        const score = document.getElementById('comfort-score');
+        const label = document.getElementById('comfort-label');
+        const headline = document.getElementById('comfort-headline');
+        const desc = document.getElementById('comfort-desc');
         const arc = document.getElementById('gauge-arc');
 
         const modes = {
-            hjemme: { t: '21.5°', l: 'OPTIMAL', h: '82px', off: '96', s: 'url(#gaugeGrad)', pwr: '0.34', air: '623', toast: '🏠 Normal modus aktiv' },
-            bort:   { t: '17.0°', l: 'SPAREMODUS', h: '40px', off: '190', s: 'var(--success)', pwr: '0.08', air: '410', toast: '✈️ Sparemodus — temp ned, ventilasjon minimum', honey: 50 },
-            natt:   { t: '19.0°', l: 'NATTMODUS', h: '55px', off: '150', s: 'var(--accent)', pwr: '0.15', air: '580', toast: '🌙 Nattmodus — 19°, lys av, stille ventilasjon', honey: 15 },
-            lese:   { t: '20.5°', l: 'LESEMODUS', h: '68px', off: '120', s: 'var(--purple)', pwr: '0.28', air: '600', toast: '📖 Lesemodus — optimal lys og stille ventilasjon' },
+            hjemme: { t: '21.5°', score: 86, label: 'KOMFORT', emoji: '😊', head: 'Perfekt stemning!', desc: 'Luften er frisk, temperaturen behagelig, og lyset er fint. BeeAI styrer alt i bakgrunnen.', off: '44', s: 'url(#gaugeGrad)', toast: '🏠 Normal modus aktiv' },
+            bort:   { t: '17.0°', score: 95, label: 'SPAREMODUS', emoji: '✈️', head: 'Maks sparing!', desc: 'Hybelen er i dvalemodus — varme, lys og ventilasjon på minimum. Du tjener 50 🍯!', off: '16', s: 'var(--success)', toast: '✈️ Sparemodus — du tjener Honey mens du er borte!', honey: 50 },
+            natt:   { t: '19.0°', score: 90, label: 'NATTMODUS', emoji: '🌙', head: 'God natt!', desc: 'Lys av, stille ventilasjon, og senket temperatur for bedre søvn.', off: '31', s: 'var(--accent)', toast: '🌙 Nattmodus — optimalisert for søvnkvalitet', honey: 15 },
+            lese:   { t: '20.5°', score: 88, label: 'LESEMODUS', emoji: '📖', head: 'Fokus-modus!', desc: 'Optimal belysning for lesing, stille ventilasjon og behagelig temperatur.', off: '38', s: 'var(--purple)', toast: '📖 Lesemodus — perfekt for studier' },
         };
 
         const m = modes[mode];
-        temp.innerText = m.t;
-        label.innerText = m.l;
-        bar.style.height = m.h;
-        arc.setAttribute('stroke-dashoffset', m.off);
-        arc.style.stroke = m.s;
-        document.getElementById('power-val').textContent = m.pwr;
-        document.getElementById('air-val').textContent = m.air;
+        if (temp) temp.innerText = m.t;
+        if (score) score.innerText = m.score;
+        if (label) label.innerText = m.label;
+        if (headline) headline.innerText = m.emoji + ' ' + m.head;
+        if (desc) desc.innerText = m.desc;
+        if (arc) {
+            arc.setAttribute('stroke-dashoffset', m.off);
+            arc.style.stroke = m.s;
+        }
         showToast(m.toast, m.honey ? 'success' : '');
         if (m.honey) addHoney(m.honey, event);
     }
